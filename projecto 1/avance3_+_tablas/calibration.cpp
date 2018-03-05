@@ -80,7 +80,8 @@ void Calibration::addImagePoints(vector<Point2f> points_){
   n_frames++;
 }
 
-void Calibration::setPatternSize(Size size_, bool asy_ = false){
+void Calibration::setPatternSize(Size size_, bool asy_){
+  std::cout << asy_ << "\n";
   pattern_size = size_;
   asy = asy_;
 }
