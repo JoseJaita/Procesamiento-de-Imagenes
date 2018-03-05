@@ -44,7 +44,7 @@ public:
   Mat getCameraMatrix();
   Mat getDistCoeffs();
   void setImageSize(Size size_);
-  void setPatternSize(Size size_, bool asy);
+  void setPatternSize(Size size_, bool asy_=false);
   void addImagePoints(vector<Point2f> points_);
   bool processing();
   void showResults();
