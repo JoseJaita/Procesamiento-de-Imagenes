@@ -7,8 +7,8 @@ int main(int argc, char *argv[]){
   //VideoCapture video("others/videos/calibration_mslifecam.avi");
   //VideoCapture video("others/videos/ellipses.avi");
   //VideoCapture video("others/videos/Kinect2_rgb.avi");
-  VideoCapture video("others/videos_final/PS3_rings.avi");
-  //VideoCapture video("others/videos_final/LifeCam_rings.avi");
+  //VideoCapture video("others/videos_final/PS3_rings.avi");
+  VideoCapture video("others/videos_final/LifeCam_rings.avi");
   if (!video.isOpened()){
     cout << "can't read video"<<endl;//
     return -1;
@@ -24,8 +24,8 @@ int main(int argc, char *argv[]){
 
   //--------------- Variables for Calibration-------------------------
   Calibration calibration;
-  //const string file_cal("others/calibration/rings/lifecam/");
-  const string file_cal("others/calibration/rings/ps3/");
+  const string file_cal("others/calibration/rings/lifecam/");
+  //const string file_cal("others/calibration/rings/ps3/");
   const string name_xml("params.xml");
   const Size pattern_size(5,4);
   int i_cal = 0;
@@ -102,17 +102,17 @@ int main(int argc, char *argv[]){
   // if read correctly the params
   if (1){
     Mat frame_undistorted;
-    //Mat camera_matrix = calibration.getCameraMatrix();
-    //Mat dist_coeffs = calibration.getCameraMatrix();
+    Mat camera_matrix = calibration.getCameraMatrix();
+    Mat dist_coeffs = calibration.getCameraMatrix();
 
-    Mat camera_matrix = (Mat_<double>(3, 3) << 703.2185641887843, 0, 320,
-                          0, 703.2185641887843, 240,
-                          0, 0, 1);
-    Mat dist_coeffs = (Mat_<double>(1, 5) << -0.4197524126377384,
-                       0.5789603642873149,
-                       0,
-                       0,
-                       -0.8661831870389252);
+    //Mat camera_matrix = (Mat_<double>(3, 3) << 703.2185641887843, 0, 320,
+    //                      0, 703.2185641887843, 240,
+    //                      0, 0, 1);
+    //Mat dist_coeffs = (Mat_<double>(1, 5) << -0.4197524126377384,
+    //                   0.5789603642873149,
+    //                   0,
+    //                   0,
+    //                   -0.8661831870389252);
 
     /*
     Mat camera_matrix = (Mat_<double>(3,3) << 626.3507056720025, 0, 320,
