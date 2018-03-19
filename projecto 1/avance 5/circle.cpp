@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
     if (arg == "-v"){
         Mat frame, frame_cal, gray;
         int i_cal = 0;
-        for(int i = 0;i<4500;i++) {video >> frame;imshow("image",frame);waitKey(1);}
+        //for(int i = 0;i<4500;i++) {video >> frame;imshow("image",frame);waitKey(1);}
         while (1) {
             video >> frame;
             if (frame.empty()){cout << "finish video"<<endl;return-1;}
