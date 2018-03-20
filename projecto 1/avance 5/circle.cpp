@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
     if (arg == "-v"){
         Mat frame, frame_cal, gray;
         int i_cal = 0;
-        //for(int i = 0;i<4500;i++) {video >> frame;imshow("image",frame);waitKey(1);}
+        for(int i = 0;i<4500;i++) {video >> frame;imshow("image",frame);waitKey(1);}
         while (1) {
             video >> frame;
             if (frame.empty()){cout << "finish video"<<endl;return-1;}
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
 
 
     Mat image, gray;
-
+    if (arg == "-v" || arg == "-i"){
     for (int i=0; i<n_f; i++){
         string dir = file+to_string(i)+".jpg";
         image = imread(dir);
@@ -86,7 +86,16 @@ int main(int argc, char *argv[]){
     cout << "start to Calibration ..." << endl;
     bool result = calibration.processing();
     cout << "end Calibration"<<endl << endl;
-    if (result && false) {
+    if (result){
+      calibration.showResults();
+      calibration.saveParams(file+name_xml);
+    } else cout << "fail to Calibration"<<endl;
+    }
+
+    // read from xml
+    bool r = calibration.readXml(file+name_xml);
+
+    if (r && false) {
       calibration.showResults();
       auto camera_matrix = calibration.getCameraMatrix();
       auto dist_coeffs = calibration.getDistCoeffs();
@@ -101,6 +110,7 @@ int main(int argc, char *argv[]){
 
     }
     else{
+      destroyAllWindows();
       Calibration calibration1;
       Refinement refine(calibration,file, CIRCLE);
       string s = refine.processing();
@@ -134,17 +144,21 @@ int main(int argc, char *argv[]){
         cvtColor(image,g2,COLOR_BGR2GRAY);
         bool b = findCirclesGrid(g, pattern_size, points2D, CALIB_CB_ASYMMETRIC_GRID);
 
-        bool b1 = findCirclesGrid(g1, pattern_size, points2D, CALIB_CB_ASYMMETRIC_GRID);
-        bool b2 = findCirclesGrid(g2, pattern_size, points2D, CALIB_CB_ASYMMETRIC_GRID);
-        if (b) {
-          cout << "error con una calibracion:"<<endl;
-          calibration.drawCentersAndRect(image_undistorted,points2D);}
-        if (b1){
-          cout << "error con refinamiento:"<<endl;
-          calibration.drawCentersAndRect(image_undistorted1,points2D1);}
+        bool b1 = findCirclesGrid(g1, pattern_size, points2D1, CALIB_CB_ASYMMETRIC_GRID);
+        bool b2 = findCirclesGrid(g2, pattern_size, points2D2, CALIB_CB_ASYMMETRIC_GRID);
+
         if (b2){
-          cout << "error sin calibrar:"<<endl;
+          cout << "error sin calibrar: ";
           calibration.drawCentersAndRect(image,points2D2);}
+
+        if (b) {
+          cout << "error con una calibracion: ";
+          calibration.drawCentersAndRect(image_undistorted,points2D);}
+
+        if (b1){
+          cout << "error con refinamiento: ";
+          calibration.drawCentersAndRect(image_undistorted1,points2D1);}
+
 
 
         imshow("original",image);

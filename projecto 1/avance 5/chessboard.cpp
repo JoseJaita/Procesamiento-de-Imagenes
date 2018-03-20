@@ -26,6 +26,7 @@ int main(int argc, char *argv[]){
     if (arg == "-v"){
         Mat frame, frame_cal, gray;
         int i_cal = 0;
+        for(int i = 0;i<2400;i++) {video>>frame;imshow("image",frame);}
         while (1) {
             video >> frame;
             if (frame.empty()){cout << "finish video"<<endl;return-1;}
@@ -112,6 +113,7 @@ int main(int argc, char *argv[]){
 
     }
     else{
+      destroyAllWindows();
       Calibration calibration1;
       Refinement refine(calibration,file, CHESSBOARD);
       string s = refine.processing();
@@ -152,18 +154,18 @@ int main(int argc, char *argv[]){
                                         CALIB_CB_ADAPTIVE_THRESH +CALIB_CB_NORMALIZE_IMAGE + CALIB_CB_FAST_CHECK);
         if (b2) {
           //cornerSubPix(g2, points2D2, Size(11, 11), Size(-1, -1),TermCriteria(TermCriteria::EPS +TermCriteria::COUNT, 30, 0.1 ));
-          cout << "erro sin calibrar:"<<endl;
+          cout << "erro sin calibrar: ";
           calibration.drawCentersAndRect(image,points2D2);}
 
 
         if (b) {
           //cornerSubPix(g, points2D, Size(11, 11), Size(-1, -1),TermCriteria(TermCriteria::EPS +TermCriteria::COUNT, 30, 0.1 ));
-          cout << "error con una calibracion:"<<endl;
+          cout << "error con una calibracion: ";
           calibration.drawCentersAndRect(image_undistorted,points2D);
         }
         if (b1) {
           //cornerSubPix(g1, points2D1, Size(11, 11), Size(-1, -1),TermCriteria(TermCriteria::EPS +TermCriteria::COUNT, 30, 0.1 ));
-          cout << "error con refinamiento:"<<endl;
+          cout << "error con refinamiento: ";
           calibration.drawCentersAndRect(image_undistorted1,points2D1);}
 
 

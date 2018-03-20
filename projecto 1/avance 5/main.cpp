@@ -5,9 +5,9 @@
 int main(int argc, char *argv[]){
 
   //-------------- get video--------------------------------------
-  //VideoCapture video("others/videos_final/ps3_rings.webm");
+  VideoCapture video("others/videos_final/ps3_rings.webm");
   //VideoCapture video("others/videos_final/lifecam_rings.webm");
-  VideoCapture video("others/videos_final1/ellipses.avi");
+  //VideoCapture video("others/videos_final1/ellipses.avi");
   if (!video.isOpened()){
     cout << "can't read video"<<endl;//
     return -1;
@@ -188,15 +188,15 @@ int main(int argc, char *argv[]){
       Mat copy;
       image.copyTo(copy);
       engine.processing(copy);
-      cout << "error sin calibrar:"<<endl;
+      cout << "error sin calibrar: ";
       engine.drawCentersAndRect(copy);
 
       egn.processing(image_undistorted);
-      cout << "error con una calibracion:"<<endl;
+      cout << "error con una calibracion: ";
       egn.drawCentersAndRect(image_undistorted);
 
       egn1.processing(image_undistorted1);
-      cout << "error con refinamiento:"<<endl;
+      cout << "error con refinamiento: ";
       egn1.drawCentersAndRect(image_undistorted1);
 
 
