@@ -5,9 +5,9 @@
 int main(int argc, char *argv[]){
 
   //-------------- get video--------------------------------------
-  VideoCapture video("others/videos_final/ps3_rings.webm");
+  //VideoCapture video("others/videos_final/ps3_rings.webm");
   //VideoCapture video("others/videos_final/lifecam_rings.webm");
-  //VideoCapture video("others/videos_final1/ellipses.avi");
+  VideoCapture video("others/videos_final1/ellipses.avi");
   if (!video.isOpened()){
     cout << "can't read video"<<endl;//
     return -1;
@@ -139,7 +139,8 @@ int main(int argc, char *argv[]){
     calibration1.readXml(s);
     calibration.readXml(file_cal+name_xml);
 
-    Engine egn,egn1;
+    Engine egn = engine;
+    Engine egn1 = engine;
 
     // tenemos una nueva calibration, a probar
     auto camera_matrix = calibration.getCameraMatrix();
