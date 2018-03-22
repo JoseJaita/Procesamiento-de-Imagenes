@@ -1,9 +1,12 @@
-Para compilar:
+# Dependencies
+* OpenCV (3.0 and above)
+* VTK (5.10 and above)
 
-cmake .
 
-make
+# Para compilar
+* cmake .
+* make
 
-cd bin
-
-./SHOT
+# Para ejecutar
+* cd bin
+* ./SHOT

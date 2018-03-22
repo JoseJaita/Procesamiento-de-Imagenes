@@ -21,4 +21,4 @@ anexo -> modificacion del codigo para poder comparar objetos en escenas
 
 codigo_objecto_escenas -> codigo modificado para objetos y escenas
 
-
+codigo_original -> codigo original
