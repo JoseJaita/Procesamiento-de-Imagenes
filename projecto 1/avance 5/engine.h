@@ -64,7 +64,7 @@ public:
   Mat getFrameROI();
   double getThreshold();
   Size getSizeRoi();
-  void drawResults(int n_frame, double time);
+  void drawResults(int n_frame, int n_cal,double time);
   vector<Point2f> getPointsForCal();
   int numRingsDetected();
 

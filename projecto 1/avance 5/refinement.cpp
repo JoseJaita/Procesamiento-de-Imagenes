@@ -264,6 +264,7 @@ string Refinement::processing(){
       translate = tvects[i];
 
 
+
       //filter per angle 5 to 60
       if (!(rotate.at<double>(0,0)>0.0872 || rotate.at<double>(1,0)>0.0872 &&
             rotate.at<double>(0,0)<1.0471 && rotate.at<double>(1,0)<1.0471)){
@@ -291,21 +292,16 @@ string Refinement::processing(){
         vector<Point3f> object_p_canonical;
         for (auto& p : points_c_norm)
           object_p_canonical.push_back(Point3f(p.x,p.y,0));
+        //for(auto a:object_p_canonical) cout << a << endl;
         projectPoints(object_p_canonical,rotate,translate,A,dist_coeffs,new_points2D);
 
-        //drawCenters(img_unproject,points_c_norm,Scalar(0,255,0));
+        //imshow("1",img_unproject);
+        //imshow("2",img_canonical);
+        //waitKey();
       }
 
 
       else{
-        /*
-        vector<Point2f> v_a;
-      if (pattern_type == CIRCLE)
-        findCirclesGrid(img_unproject,calibration.getPatternSize(),v_a,CALIB_CB_ASYMMETRIC_GRID);
-      if (pattern_type == CHESSBOARD)
-        findChessboardCorners(img_unproject,calibration.getPatternSize(),v_a,
-                              CALIB_CB_ADAPTIVE_THRESH +CALIB_CB_NORMALIZE_IMAGE + CALIB_CB_FAST_CHECK);
-        */
         vector<Point2f> points_canonical;
         vector<Point2f> points_c_norm;
         r = findPointsCanonical(img_canonical, points_canonical);
@@ -323,16 +319,10 @@ string Refinement::processing(){
       }
 
 
-
       // average last points and new points
       for (int i_p = 0; i_p<new_points2D.size(); i_p++)
         new_points2D[i_p] = (new_points2D[i_p]+last_points2D[i][i_p])/2.0;
 
-      //cout << i << endl;
-      //for(int j = 0; j<new_points2D.size();j++)
-        //cout << last_points2D[i][j]<<" "<<new_points2D[j]<<endl;
-
-      // add image points for new calibration
       calibration.addImagePoints(new_points2D);
 
       //this image is good for calibration
@@ -358,13 +348,6 @@ string Refinement::processing(){
 }
 
 bool Refinement::testCanonical(const Mat& src, Mat& dst, Mat& cambio_centers,Engine& egn,Calibration cal){
-  /*
-  vector<Point2f> a{Point2f(2,3),Point2f(29,89),Point2f(500,500)};
-  vector<Point2f> b;
-  distortCenters(a,b);
-  cout << "rrrrrrrrrrrr"<<endl;
-  for(auto p: b) cout << p << endl;
-  */
 
   calibration = cal;
   Mat A = calibration.getCameraMatrix();
@@ -402,12 +385,6 @@ bool Refinement::testCanonical(const Mat& src, Mat& dst, Mat& cambio_centers,Eng
     drawCenters(cambio_centers,last_points2D,Scalar(0,0,255));
     drawCenters(cambio_centers,new_points2D,Scalar(0,255,0));
 
-    /*
-    cout << "last points" <<endl;
-    for(auto&p : last_points2D) cout << p <<endl;
-    cout << "new points" <<endl;
-    for(auto&p : new_points2D) cout << p <<endl;
-    */
 
     engine.drawCentersAndRect(dst);
     return true;

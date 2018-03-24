@@ -65,7 +65,7 @@ void Engine::drawCentersAndRect(Mat& frame_){
       }
     }
     error /= 12.0;
-    cout << "ERROR OF COLLINEARY: " << error << endl;
+    cout << error << endl;
     for(auto&p : points){
       circle(frame_,p,1,Scalar(0,255,0));
 

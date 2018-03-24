@@ -3,6 +3,13 @@
 #include "refinement.h"
 
 int main(int argc, char *argv[]){
+  //------------- argvs ------------------------------------------
+  bool flag_random = false;
+  int n_random = 0;
+  if (argc>2){
+    string a = argv[1];
+    if (a == "-r") {flag_random=true; n_random = atoi(argv[2]);}
+  }
 
   //-------------- get video--------------------------------------
   VideoCapture video("others/videos_final/ps3_rings.webm");
@@ -14,9 +21,13 @@ int main(int argc, char *argv[]){
   }
 
   //--------------- Variables for engine ----------------------------
-  namedWindow("frame", 0);
-  namedWindow("binary", 0);
-  namedWindow("T", 0);
+  namedWindow("frame");
+  namedWindow("binary",WINDOW_NORMAL);
+  namedWindow("Transformation",WINDOW_NORMAL);
+  resizeWindow("binary",480,320);
+  resizeWindow("Transformation",480,320);
+  moveWindow("binary",640*1.1,0);
+  moveWindow("Transformation",640*1.1,320*1.12);
   Mat frame;
   Engine engine;
   int n_frame = 0;
@@ -52,20 +63,21 @@ int main(int argc, char *argv[]){
     chrono::duration<double> delay = finish-start;
 
     // draw match roi n_frame and time
-    engine.drawResults(n_frame++, delay.count()*1000);
+    engine.drawResults(n_frame++, i_cal, delay.count()*1000);
 
     cout << "time is: "<<delay.count()*1000 << "\n";
 
     // show results for engine
-    engine.showImages({"frame","binary","T"});
+    engine.showImages({"frame","binary","Transformation"});
     cout << "aaaaa"<<endl;
 
-    char c = (char)waitKey(0);  // CAMBIAR A  1 PARA QUE CORRA SIN PARAR
+    char c = (flag_random)? (char)waitKey(1) : (char)waitKey();
+
     // exit program
     if (c == 27){ destroyAllWindows(); return 0;}
 
     // save image for calibration
-    if (c == 's'){
+    if (c == 's' || (flag_random && n_frame%50==0)){
       // if number of ring is less that pattern size, discard current frame
       if (engine.numRingsDetected() == pattern_size.height*pattern_size.width){
         imwrite(file_cal+to_string(i_cal)+".jpg",frame_cal,{CV_IMWRITE_JPEG_QUALITY,100});
@@ -83,7 +95,7 @@ int main(int argc, char *argv[]){
     }
 
     // to calibration
-    if (c == 'c'){
+    if (c == 'c' || (flag_random && i_cal == n_random)){
       cout << endl <<"start Calibration..."<<endl;
       // yet have the point2D, now to calibration
       bool result = calibration.processing();
@@ -151,13 +163,32 @@ int main(int argc, char *argv[]){
     //cout << camera_matrix << endl;
     //cout << camera_matrix1 << endl;
 
-    namedWindow("original",0);
-    namedWindow("calibration 0",0);
-    namedWindow("test canonical 0");
-    namedWindow("calibration 1",0);
-    namedWindow("cambio centers");
-    namedWindow("cortinas",0);
-    namedWindow("cortinas 1",0);
+    namedWindow("original",WINDOW_NORMAL);
+    namedWindow("calibration 1",WINDOW_NORMAL);
+    namedWindow("test canonical 0",WINDOW_NORMAL);
+    namedWindow("calibration 5",WINDOW_NORMAL);
+    namedWindow("cambio centros",WINDOW_NORMAL);
+    namedWindow("cortinas 1",WINDOW_NORMAL);
+    namedWindow("cortinas 5",WINDOW_NORMAL);
+    int w = 320*1.2;
+    int h = 240*1.2;
+    resizeWindow("original", w,h);
+    resizeWindow("calibration 1", w,h);
+    resizeWindow("test canonical 0", w,h);
+    resizeWindow("calibration 5", w,h);
+    resizeWindow("cambio centros", w,h);
+    resizeWindow("cortinas 1", w,h);
+    resizeWindow("cortinas 5", w,h);
+    moveWindow("original",0,0);
+    moveWindow("cortinas 1",w*1.2,0);
+    moveWindow("cortinas 5",w*1.1*2,0);
+    moveWindow("calibration 1",0,h*1.25);
+    moveWindow("calibration 5",w*1.2,h*1.25);
+    moveWindow("cambio centros",w*1.1*2,h*1.25);
+    moveWindow("test canonical 0",w*1.1*2,h*1.25);
+
+
+
     while (1) {
       Mat image, image_undistorted, image_undistorted1;
       Mat image_test_canonical;
@@ -208,14 +239,14 @@ int main(int argc, char *argv[]){
         flag_test = refine.testCanonical(image, image_test_canonical,cambio_centers,engine,calibration1);
 
       imshow("original",copy);
-      imshow("cortinas",cortinas);
-      imshow("cortinas 1",cortinas2);
-      imshow("calibration 0", image_undistorted);
+      imshow("cortinas 1",cortinas);
+      imshow("cortinas 5",cortinas2);
+      imshow("calibration 1", image_undistorted);
       if (flag_test){
         imshow("test canonical 0", image_test_canonical);
-        imshow("cambio centers",cambio_centers);
+        imshow("cambio centros",cambio_centers);
       }
-      imshow("calibration 1", image_undistorted1);
+      imshow("calibration 5", image_undistorted1);
       char c =(char)waitKey(0);
       if (c == 27) break;
     }

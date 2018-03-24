@@ -191,7 +191,8 @@ void Calibration::drawCentersAndRect(Mat& frame_, vector<Point2f>& points){
       }
     }
     error /= (pattern_size.height*(pattern_size.width-2));
-    cout << "ERROR OF COLLINEARY: " << error << endl;
+    cout << error<<endl;
+    //cout << "ERROR OF COLLINEARY: " << error << endl;
     for(auto&p : points)
       circle(frame_,p,1,Scalar(0,255,0));
   }
