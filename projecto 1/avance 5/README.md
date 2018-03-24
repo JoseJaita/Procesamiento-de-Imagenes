@@ -7,14 +7,13 @@
 * chessboard.cpp-> contiene la calibracion de chessboard
 * circle.cpp -> contiene la calibracion de los circulos
 * virtual -> para graficar un cubo en un video, previamente calibrado
-/----------------------------------------------------------------------------
 
 
 # Para calibrar usando circulos simetricos
 
 g++ -std=c++14 circle.cpp calibration.cpp -o circle `pkg-config --libs opencv` -fopenmp
 
-* si es la primera vez entonces (-v) dice que primero guardaremos images (20), el video va a estar en stop
+* si es la primera vez entonces (-v) dice que primero guardaremos imagenes (20), el video va a estar en stop
 entonces apretar "n" para el siguiente frame y cuando se quiera usar cierto frame para la calibracion
 presionar "s" 
 * ./circle -v 20
@@ -39,6 +38,6 @@ presionar "s"
 
 # Para Graficar un cubo
 * Compilar: g++ -std=c++14 virtual.cpp engine.cpp calibration.cpp refinement.cpp -o virtual `pkg-config --libs opencv` -fopenmp
-* Ejecutar: ./virtual <ruta de video> <ruta del xml(parametros de calibracion)> 
+* Ejecutar: ./virtual "ruta de video" "ruta del xml(parametros de calibracion)" 
 
 
